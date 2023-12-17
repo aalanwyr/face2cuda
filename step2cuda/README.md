@@ -25,6 +25,74 @@ Current active Device 0:"NVIDIA A10"
   Maximu memory pitch                           2147483647 bytes
 ```
 
+# 3_3_tuning_kernel_size.cu
+This is a demo to check the different performance of different kernel size
+```
+./bin/tuning_kernel_size 32 16
+Current matrix size is 256 MBs
+Check result success!
+GPU Execution configuration<<<(256,512),(32,16)|1.764096 ms
+
+./bin/tuning_kernel_size 16 32
+Current matrix size is 256 MBs
+Check result success!
+GPU Execution configuration<<<(512,256),(16,32)|1.792320 ms
+
+./bin/tuning_kernel_size 16 16
+Current matrix size is 256 MBs
+Check result success!
+GPU Execution configuration<<<(512,512),(16,16)|1.786656 ms
+
+./bin/tuning_kernel_size 16 8
+Current matrix size is 256 MBs
+Check result success!
+GPU Execution configuration<<<(512,1024),(16,8)|1.802656 ms
+
+./bin/tuning_kernel_size 256 4
+Current matrix size is 256 MBs
+Check result success!
+GPU Execution configuration<<<(32,2048),(256,4)|1.773120 ms
+
+./bin/tuning_kernel_size 64 2
+Current matrix size is 256 MBs
+Check result success!
+GPU Execution configuration<<<(128,4096),(64,2)|1.780096 ms
+
+ /bin/tuning_kernel_size 256 8
+Current matrix size is 256 MBs
+Results don't match!
+20.989000(hostRef[0] )!= 0.000000(gpuRef[0])
+GPU Execution configuration<<<(32,1024),(256,8)|0.128512 ms
+```
+## configuration<<<(32,1024),(256,8) failed
+    The number of threads in a block should be lower 1024 or the kernel would fail!
+    Meanwhile the result check is necessary
+## Use nv prof tool to dump details
+```
+Check active thread:
+nvprof --metrics achieved_occupancy ./simple_sum_matrix
+===> sudo ncu --metrics sm__warps_active.avg.pct_of_peak_sustained_active ./bin/tuning_kernel_size 256 4
+Current matrix size is 256 MBs
+==PROF== Connected to process 432610 (/home/gta/yaranwu/face2cuda/step2cuda/bin/tuning_kernel_size)
+ERROR: 3_3_tuning_kernel_size.cu:61,code:36,reason:API call is not supported in the installed CUDA driver
+==PROF== Disconnected from process 432610
+==ERROR== The application returned an error code (1).
+==WARNING== No kernels were profiled.
+==WARNING== Profiling kernels launched by child processes requires the --target-processes all option.
+
+Check global memory throughput:
+nvprof --metrics gld_throughput ./simple_sum_matrix
+===> sudo ncu --metrics l1tex__t_bytes_pipe_lsu_mem_global_op_ld.sum.per_second /bin/tuning_kernel_size 256 4
+
+Check global memory efficiency:
+nvprof --metrics gld_efficiency ./simple_sum_matrix
+===> sudo ncu --metrics smsp__sass_average_data_bytes_per_sector_mem_global_op_ld.pct /bin/tuning_kernel_size 256 4
+
+More details:
+sudo ncu --list-metrics
+
+```
+
 # 3_6_recursive_kernel.cu
 This is a demo to call a kernel in the cuda kernel recursively
 We need to use `cudaDeviceSynchronize()` to sync the thread execution  between Host and GPU;
