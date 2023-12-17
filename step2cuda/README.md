@@ -169,3 +169,11 @@ Current dept 4 blockIdx 0 threadIdx 1 tid 1
 Current dept 5 blockIdx 0 threadIdx 0 tid 0
 ```
 
+# 4_5_uniform_memory.cu
+use `cudaMallocManaged((float**)&a_d,nByte)` to creat uniform memory ptr.
+```
+./bin/uniform_memory 
+Vector size:16777216
+Check result success!
+GPU Execution 23.095297 ms
+```
