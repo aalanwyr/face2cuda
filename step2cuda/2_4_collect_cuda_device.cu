@@ -80,6 +80,15 @@ int main(int argc, char** argv) {
         printf("  Maximun size of each dimension of a grid:     %d x %d x %d\n",
             deviceProp.maxGridSize[0],deviceProp.maxGridSize[1],deviceProp.maxGridSize[2]);
         printf("  Maximu memory pitch                           %lu bytes\n",deviceProp.memPitch);
+        printf("  =============== Memory info================================\n");
+        printf("  Device mem size:                            	%d bytes\n",deviceProp.totalGlobalMem);
+        printf("  Shared memory available per block:            %d bytes\n",deviceProp.sharedMemPerBlock);
+        printf("  Shared memory available per multiprocessor    %d bytes\n",deviceProp.sharedMemPerMultiprocessor);
+        printf("  Per device maximum shared memory per block    %d bytes\n",deviceProp.sharedMemPerBlockOptin);
+        printf("  L2 Cache Size:                            	%d bytes\n",deviceProp.l2CacheSize);
+        printf("  Constant memory in device:                    %d bytes\n",deviceProp.totalConstMem);
+        printf("  Device supports caching globals in L1:        %d bytes\n",deviceProp.globalL1CacheSupported);
+        printf("  Device supports caching locals in L1:         %d bytes\n",deviceProp.localL1CacheSupported);
 
     }
 
