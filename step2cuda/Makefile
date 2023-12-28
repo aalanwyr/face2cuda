@@ -3,3 +3,5 @@ all:
 	nvcc -o ./bin/tuning_kernel_size 3_3_tuning_kernel_size.cu
 	nvcc -o ./bin/recursive_hello 3_6_recursive_kernel.cu -lcudadevrt --relocatable-device-code true
 	nvcc -o ./bin/uniform_memory 4_5_uniform_memory.cu
+	nvcc -o ./bin/global_memory_disable_l1 -O3 -Xptxas -dlcm=cg 4_3_global_memory.cu
+	nvcc -o ./bin/global_memory_enable_l1 -O3 -Xptxas -dlcm=ca 4_3_global_memory.cu
