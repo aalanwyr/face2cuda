@@ -6,3 +6,4 @@ all:
 	nvcc -o ./bin/global_memory_disable_l1 -O3 -Xptxas -dlcm=cg 4_3_global_memory.cu
 	nvcc -o ./bin/global_memory_enable_l1 -O3 -Xptxas -dlcm=ca 4_3_global_memory.cu
 	nvcc -o ./bin/global_memory_enable_l1_aos -O3 -Xptxas -dlcm=ca 4_3_array_of_struct.cu
+	nvcc -o ./bin/5_2_shared_mem_read_data 5_2_shared_mem_read_data.cu

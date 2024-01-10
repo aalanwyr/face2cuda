@@ -177,3 +177,38 @@ Vector size:16777216
 Check result success!
 GPU Execution 23.095297 ms
 ```
+# 5_2_shared_mem_read_data.cu
+check the different read/write policy in SMEM to avoid the bank conflict
+```
+./bin/5_2_shared_mem_read_data 
+Using device 0: NVIDIA GeForce RTX 3060 Ti
+Vector size:1024
+--------------------------------------------
+the device is cudaSharedMemBankSizeFourByte: 4-Bytes
+--------------------------------------------
+warmup!
+===launch kernel setRowReadRow=== 
+kernel_index 0 launch
+Kernel execution GPU time 0.001616 ms
+===launch kernel setRowReadCol=== 
+kernel_index 1 launch
+Kernel execution GPU time 0.002099 ms
+===launch kernel setColReadRow=== 
+kernel_index 2 launch
+Kernel execution GPU time 0.002098 ms
+===launch kernel setColReadCol=== 
+kernel_index 3 launch
+Kernel execution GPU time 0.002700 ms
+===launch kernel setColReadColPad=== 
+kernel_index 4 launch
+Kernel execution GPU time 0.001605 ms
+===launch kernel setRowReadRowRect=== 
+kernel_index 5 launch
+Kernel execution GPU time 0.001618 ms
+===launch kernel setRowReadColRect=== 
+kernel_index 6 launch
+Kernel execution GPU time 0.001731 ms
+===launch kernel setRowReadColPadRect=== 
+kernel_index 7 launch
+Kernel execution GPU time 0.001618 ms
+```
